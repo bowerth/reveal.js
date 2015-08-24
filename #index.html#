@@ -47,47 +47,34 @@
 	</section>
 
 	<section>
-
+	  
 	  <section>
 	    <h2>STI Developments</h2>
 	    <p> <a href="http://oe.cd/tiva">TiVA</a>: Trade in Value-added</p>
 	    <p><a href="https://www.innovationpolicyplatform.org/">IPP</a>: The Innovation Policy Platform</p>
-	    <!-- <p><a href="http://www.oecd.org/sti/dynemp.htm">DynEmp</a>: Employment dynamics</p> -->
-	    <p><a href="http://www.oecd.org/sti/Flyer_Multiprod.pdf">MultiProd</a>: Micro drivers of aggregate productivity</p>
+	    <p><a href="http://www.oecd.org/sti/dynemp.htm">DynEmp</a>: Employment dynamics</p>
 	    <p><a href="http://oe.cd/bigdata">oe.cd/bigdata</a>: Data-driven innovation</p>
 	  </section>
-
+	  
 	  <section>
 	    <h2>ICIO-TIVA</h2>
 	    <p>Measuring Trade in Value Added</p>
 	    <p>An OECD-WTO joint initiative</p>
 	    <p>STI/EAS</p>
-	    <aside class="notes" data-markdown>
-	    	- no version control for programs
-	    	- data on remote dropbox is slow, require a local-network-local sync tool
-	    </aside>
 	  </section>
-
+	  
 	  <section>
 	    <h2>IPP</h2>
 	    <p>The Innovation Policy Platform</p>
 	    <p>An World Bank-OECD joint initiative</p>
-	    <p>STI/STP</p>
-	    <aside class="notes" data-markdown>
-	    	- COP part (community of practice, interactive work spaces) uses Drupal that in turn uses Git in the backend
-	    </aside>
+	    <p>STI/CSO</p>
 	  </section>
-
+	  
 	  <section>
-	    <h2>MultiProd</h2>
+	    <h2>DynEmp</h2>
 	    <p>Employment dynamics, young businesses and allocative efficiency</p>
 	    <p>Network of researchers in 17 OECD countries plus Brazil</p>
 	    <p>STI/SPD</p>
-	    <aside class="notes" data-markdown>
-	    	- two colleagues develop a STATA program jointly using a combination of VCS and dropbox
-	    	- the program is stored in dropbox and a link sent to external users
-	    	- envisage future use of VCS for external collaboration to improve transparency, issue tracking and facilitate user contributions
-	    </aside>
 	  </section>
 
 	  <section>
@@ -95,23 +82,31 @@
 	    <p>Data-driven innovation for growth and well-being</p>
 	    <p>STI/DEP</p>
 	  </section>
-
+	  
 	</section>
 
-	<!-- <section> -->
-	<!--   <section> -->
-	<!--     <h2>Program Sharing</h2> -->
-	<!--     <p>DynEmp: A Stata® Routine for Distributed Micro-data Analysis of Business Dynamics (<a href="http://dx.doi.org/10.1787/5jz40rscddd4-en">DOI: 10.1787/18151965</a>)</p> -->
-	<!--   </section> -->
-	<!-- </section> -->
+	<section>
+	  <section>
+	    <h2>Program Dissemination</h2>
+	    <p>DynEmp: A Stata® Routine for Distributed Micro-data Analysis of Business Dynamics (<a href="http://dx.doi.org/10.1787/5jz40rscddd4-en">DOI: 10.1787/18151965</a>)</p>
+	  </section>
+	</section>
 
-	<!-- <section> -->
-	<!--   <section> -->
-	<!--     <h2>Program Sourcing</h2> -->
-	<!--     <p><a href="https://github.com/amattioc/sdmx">SDMX</a>: connector between SDMX data providers and data tools (R, STATA, SAS, Excel, MATLAB)</p> -->
-	<!--     <\!-- <p><a href="https://github.com/dbescond/Rilostat">Rilostat</a>: R access routine to ILOSTAT data through the SDMX API (<a href="https://www.ilo.org/ilostat/faces/home/statisticaldata/technical_page">ILOSTAT "Tools" page</a>)</p> -\-> -->
-	<!--   </section> -->
-	<!-- </section> -->
+	<section>
+	  <section>
+	    <h2>Program Sourcing</h2>
+	    <p><a href="https://github.com/amattioc/sdmx">SDMX</a>: connector between SDMX data providers and data tools (R, STATA, SAS, Excel, MATLAB)</p>
+	    <!-- <p><a href="https://github.com/dbescond/Rilostat">Rilostat</a>: R access routine to ILOSTAT data through the SDMX API (<a href="https://www.ilo.org/ilostat/faces/home/statisticaldata/technical_page">ILOSTAT "Tools" page</a>)</p> -->
+	  </section>
+	</section>
+
+	<section>
+	  <section>
+	    <h2>Platform Development</h2>
+	    <p><a href="https://github.com/amattioc/sdmx">SDMX</a>: connector between SDMX data providers and data tools (R, STATA, SAS, Excel, MATLAB)</p>
+	    <!-- <p><a href="https://github.com/dbescond/Rilostat">Rilostat</a>: R access routine to ILOSTAT data through the SDMX API (<a href="https://www.ilo.org/ilostat/faces/home/statisticaldata/technical_page">ILOSTAT "Tools" page</a>)</p> -->
+	  </section>
+	</section>
 
       </div>
 

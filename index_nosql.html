@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>NoSQL for Scientometrics</title>
+
+		<meta name="description" content="Interactive Scientometric indicator platform using MarkLogic">
+		<meta name="author" content="Bo Werth">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>MarkLogic</h1>
+					<h3>NoSQL for Scientometrics</h3>
+					<!-- <p><small>Presented by <a href="http://bowerth.github.io">Bo Werth</a></small></p> -->
+				</section>
+
+				<section>
+					<section>
+						<h2>Publication Databases</h2>
+						<h3>Springer</h3>
+						<p>
+							<a href="http://link.springer.com">link.springer.com</a>
+						</p>
+						<h3>Elsevier</h3>
+						<p>
+							<a href="http://www.sciencedirect.com">sciencedirect.com</a>
+						</p>
+						<p>
+							<a href="http://www.elsevier.com/solutions/scopus">Scopus</a>
+						</p>
+					</section>
+					<section>
+						<h2>Elsevier Scopus</h2>
+						<p>
+							<li>abstract and citation database of peer-reviewed literature</li>
+							<li>scientific journals, books and conference proceedings</li>
+							<li>comprehensive overview of the world's research output</li>
+							<li>science & technology, medicine, social sciences, arts & humanities</li>
+							<li>smart tools to track, analyze and visualize research</li>
+						</p>
+					</section>
+					<section>
+						<h2>Scopus Custom Data</h2>
+						<p>
+							<li>Time: 1996-2012</li>
+							<li>Size: ~200GB p.a.</li>
+						</p>
+						<h3>Data Format</h3>
+						<p>
+							<li>batches of 10.000 pgp encrypted, compressed archives</li>
+							<li>separate XML files for metadata and abstract</li>
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>SQL Architecture</h2>
+						<p>
+							<li>map XML fields to table columns</li>
+							<li>set of primary keys</li>
+							<li>abstracts in single column</li>
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Indicator Derivation</h2>
+						<p>
+							Elsevier <a href="http://www.elsevier.com/solutions/scival">SciVal</a>
+						</p>
+						<p>
+    	                	<img data-src="assets/SciVal-Alpha-Diagram_v6.jpg" alt="Down arrow">
+						</p>
+					</section>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
