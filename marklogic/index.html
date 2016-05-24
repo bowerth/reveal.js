@@ -4,7 +4,6 @@
   <head>
     <meta charset="utf-8">
 
-    <!-- <title>NoSQL for Scientometrics</title> -->
     <title>MarkLogic for Elsevier SCOPUS</title>
 
     <meta name="description" content="Interactive Scientometric indicator platform using MarkLogic">
@@ -15,23 +14,23 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-    <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="../css/reveal.css">
+    <link rel="stylesheet" href="../css/theme/black.css" id="theme">
 
     <!-- Code syntax highlighting -->
-    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="../lib/css/zenburn.css">
 
     <!-- Printing and PDF exports -->
     <script>
       var link = document.createElement( 'link' );
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../css/print/pdf.css' : '../css/print/paper.css';
       document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
 
     <!--[if lt IE 9]>
-	<script src="lib/js/html5shiv.js"></script>
+	<script src="../lib/js/html5shiv.js"></script>
 	<![endif]-->
   </head>
 
@@ -89,7 +88,7 @@
 	      Elsevier <a href="http://www.elsevier.com/solutions/scival">SciVal</a>
 	    </p>
 	    <p>
-	      <img data-src="assets/SciVal-Alpha-Diagram_v6.jpg" alt="Down arrow">
+	      <img data-src="../assets/SciVal-Alpha-Diagram_v6.jpg" alt="Down arrow">
 	    </p>
 	  </section>
 	  
@@ -126,24 +125,24 @@
 	  
 	  <section>
 	    <h3>Query Console</h3>
-	    <img data-src="assets/ml-query-console-8000.png" alt="ML Query Console 8000">
+	    <img data-src="../assets/ml-query-console-8000.png" alt="ML Query Console 8000">
 	  </section>
 	  
 	  <section>
 	    <h3>System Summary</h3>
-	    <img data-src="assets/ml-admin-8001-sample-project-content-forests.png" alt="ML Admin 8001, sample project content, forests">
+	    <img data-src="../assets/ml-admin-8001-sample-project-content-forests.png" alt="ML Admin 8001, sample project content, forests">
 	  </section>
 
 	  <section>
 	    <h3>REST Server</h3>
-	    <img data-src="assets/ml-rest-server-8100.png" alt="ML REST Server 8100">
+	    <img data-src="../assets/ml-rest-server-8100.png" alt="ML REST Server 8100">
 	  </section>
 
 	  <section>
 	    <p>
 	      http://localhost:8100/v1/search?q=OECD&start=1&pageLength=5
 	    </p>
-	    <img data-src="assets/ml-rest-server-example-search.png" alt="ML REST Server example search">
+	    <img data-src="../assets/ml-rest-server-example-search.png" alt="ML REST Server example search">
 	  </section>
 	  
 	</section>
@@ -185,7 +184,7 @@
 	  
 	  <section>
 	    <h3>R Shiny UI: word cloud, word count</h3>
-	    <img data-src="assets/shiny-example-word-cloud.png" alt="Shiny example word cloud">
+	    <img data-src="../assets/shiny-example-word-cloud.png" alt="Shiny example word cloud">
 	  </section>
 
 	</section>
@@ -205,8 +204,8 @@
 
     </div>
 
-    <script src="lib/js/head.min.js"></script>
-    <script src="js/reveal.js"></script>
+    <script src="../lib/js/head.min.js"></script>
+    <script src="../js/reveal.js"></script>
 
     <script>
 
@@ -222,12 +221,12 @@
 
       // Optional reveal.js plugins
       dependencies: [
-      { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-      { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-      { src: 'plugin/zoom-js/zoom.js', async: true },
-      { src: 'plugin/notes/notes.js', async: true }
+      { src: '../lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: '../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: '../plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: '../plugin/zoom-js/zoom.js', async: true },
+      { src: '../plugin/notes/notes.js', async: true }
       ]
       });
 
