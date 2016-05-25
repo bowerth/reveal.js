@@ -49,14 +49,13 @@
 	      <section>
 	        <section>
 	          <h2>Modules</h2>
-	          <h3>Tailored Flow Diagrams</h3>
-	          <p>
-	            <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#stock-module">Stock Module</a>
-	          </p>
-	          <h3>Helper Programs</h3>
-	          <p>
-	            <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#r-scripts-by-module">R Scripts by Module</a>
-	          </p>
+	        </section>
+	        <section>
+	          <h3>High-Levels Flow Diagrams</h3>
+	          <!-- <p> -->
+	          <!--   <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#stock-module">Stock Module</a> -->
+	          <!-- </p> -->
+            <img data-src="assets/fbs-module-flow-stocks.png" alt="fbs flow stocks" style="border:0px; background-color:transparent">
 	        </section>
 	        <section>
 	          <h3>High-Level Flow Diagram</h3>
@@ -68,6 +67,28 @@
             </ul>
           </section>
           <section>
+	          <h3>Helper Programs</h3>
+	          <!-- <p> -->
+	          <!--   <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#r-scripts-by-module">R Scripts by Module</a> -->
+	          <!-- </p> -->
+            <pre><code>faoswsFeed
+:   animalFunctions.R  
+    ass_energy_factor.r  
+    ass_protein_factor.r  
+    buffalo_energy_factor.r  
+    buffalo_protein_factor.r  
+    calculateAnimalUnits.R  
+    calculateAquaDemand.r  
+    calculateFeedDemand.R</code></pre>
+            <pre><code>faoswsFood
+:   calculateFood.R  
+    commodity2FunctionalForm.R  
+    FoodModule.R  
+    functionalForms.R  
+    getCommodityClassification.R  
+    getFoodData.R</code></pre>
+	        </section>
+	        <section>
 	          <h3>Helper Programs</h3>
             <ul>
 	            <li>indicate complexity of module</li>
@@ -84,6 +105,8 @@
 
 	        <section>
 	          <h2>Data</h2>
+	        </section>
+          <section>
 	          <!-- <h3>SWS Dataset Configuration</h3> -->
 	          <!-- <p> -->
 	          <!--   <a href="http://hqlqasws1.hq.un.fao.org:8080/dataset_configuration.html">hqlqasws1.hq.un.fao.org:8080/dataset_configuration.html</a> -->
@@ -92,12 +115,7 @@
 	          <p>
 	            <a href="https://github.com/SWS-Methodology/faoswsStandardization/blob/master/DESCRIPTION#L30">faoswsStandardization/DESCRIPTION</a>
 	          </p>
-	          <h3>"DatasetKey" function</h3>
-	          <p>
-	            <a href="https://github.com/SWS-Methodology/faoswsFeed/blob/master/R/getAnimalStocks.R#L19">faoswsFeed/R/getAnimalStocks.R </a>
-	          </p>
 	        </section>
-
           <section>
             <h3>"DESCRIPTION" files</h3>
             <ul>
@@ -107,14 +125,28 @@
 	            <li><font color="red">CON</font> information ideally associated with module</li>
             </ul>
 	        </section>
-
+          <section>
+	          <h3>"DatasetKey" function</h3>
+	          <p>
+	            <a href="https://github.com/SWS-Methodology/faoswsFeed/blob/master/R/getAnimalStocks.R#L19">faoswsFeed/R/getAnimalStocks.R </a>
+	          </p>
+	        </section>
 	        <section>
 	          <h3>"DatasetKey" Function</h3>
             <ul>
               <li>search programs for keywords, e.g. "DatasetKey"</li>
               <li>parse code block, extract fields "domain" and "dataset"</li>
               <li>repeat for similar keywords (e.g. "ReadDatatable")</li>
-              <li>export result to <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/data/#r">fbsmodules/data</a></li>
+              <pre><code>faoswsFeed
+:   c("agriculture:aproduction", "trade:total_trade_CPC")  
+    c("agriculture:aproduction:==", "trade:total_trade_CPC:==")  
+    agriculture:aproduction
+
+faoswsFood
+:   c("faostat_one:FS1_SUA_UPD", "agriculture:aproduction")
+
+faoswsIndustrial
+: </code></pre>
             </ul>
 	        </section>
 
@@ -124,11 +156,19 @@
 	        
 	        <section>
 	          <h2>Validation</h2>
-            <h3>Calories per day per person</h3>
             <p>
-              <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/validation/#calories-per-day-per-person">fbsmodules/validation</a>
+              <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/validation/">fbsmodules/validation</a>
             </p>
-
+	        </section>
+	        <section>
+            <h3>Dietary Energy Supply</h3>
+            <h4>calories per day per person</h4>
+            <img data-src="assets/sua-fbs-iraq-des-comparison-2013.png" alt="sua fbs iraq des comparison 2013" style="border:0px; background-color:transparent">
+	        </section>
+	        <section>
+            <h3>DES-DEC Comparison</h3>
+            <h4>Dietary Energy Supply and Consumption</h4>
+            <img data-src="assets/fbs-des-dec-comparison.png" alt="fbs des dec comparison" style="border:0px; background-color:transparent">
 	        </section>
 
         </section>
