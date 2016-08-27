@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+    <title>NSO API</title>
+
+    <meta name="description" content="R Package to access APIs of National Statistical Offices (NSO)">
+    <meta name="author" content="Bo Werth">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../css/reveal.css">
+    <link rel="stylesheet" href="../css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+     var link = document.createElement( 'link' );
+     link.rel = 'stylesheet';
+     link.type = 'text/css';
+     link.href = window.location.search.match( /print-pdf/gi ) ? '../css/print/pdf.css' : '../css/print/paper.css';
+     document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+	      <script src="lib/js/html5shiv.js"></script>
+	  <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <div class="slides">
+          <section data-background="#131313">
+              <!-- http://str8edgemurdario.deviantart.com/art/CalifornIPA-166276217 -->
+              <img data-src="assets/californipa_by_str8edgemurdario.jpg" alt="ipa words" height="600px" style="border:0px; float:left">
+              <p>Beer bottle made out of the names of several different California-brewed IPA's</p>
+          </section>
+            <section class="title-slide" data-background="assets/db_background.png">
+
+	        <h1>nsoAPI</h1>
+
+          <p>https://github.com/bowerth/nsoApi</p>
+	        <p><small>Bo Werth @ OECD Directorate for Science, Technology and Innovation</small></p>
+
+            </section>
+            <section data-background="assets/db_background.png">
+
+                    <!-- https://www.cbs.nl/Content/assets/cbs-brand.svg -->
+                <a href="https://www.cbs.nl/en-gb"><img data-src="assets/cbs-brand.svg" alt="cbs" height="138px" style="border:0px; background-color:transparent"></a>
+                    <!-- https://www.ons.gov.uk/assets/img/ons-logo.svg -->
+                <a href="https://www.ons.gov.uk/"><img data-src="assets/ons-logo.svg" alt="ons" height="80px" style="border:0px; background-color:transparent"></a>
+                    <!-- https://www-genesis.destatis.de/genesis/assets/AmtsLogo.png -->
+                <a href="https://www.destatis.de/EN/Homepage.html"><img data-src="assets/AmtsLogo.png" alt="destatis" style="border:0px; background-color:transparent"></a>
+                    <!-- http://www.bea.gov/_assets/bea-final-logo-blue-backing.png -->
+                <a href="http://www.bea.gov/index.htm"><img data-src="assets/bea-final-logo-blue-backing.png" alt="bea" style="border:0px; background-color:transparent"></a>
+
+                    <!-- http://www.statistik.at/wcm/fragments/defaults/assets/logo_statistik_en.gif -->
+                <a href="http://www.statistik.at/web_en/statistics/index.html"><img data-src="assets/logo_statistik_en.gif" alt="statat" style="border:0px; background-color:transparent"></a>
+                    <!-- http://www.statcan.gc.ca/sites/all/themes/statcan_bootstrap/assets/sig-blk-en.svg -->
+                <a href=""><img data-src="assets/sig-blk-en.svg" height="60px" style="border:0px; background-color:transparent"></a>
+
+                <!-- https://www.dst.dk/Site/Dst/assets/logo_en.png -->
+                <a href="https://www.dst.dk/en"><img data-src="assets/logo_en.png" style="border:0px; background-color:transparent"></a>
+                <!-- http://www.scb.se/resources/assets/SCB-logo_eng.png -->
+                <a href="http://www.scb.se/en_/"><img data-src="assets/SCB-logo_eng.png" style="border:0px; background-color:transparent"></a>
+                <!-- https://www.ssb.no/_public/skins/advanced/ssb.no/assets/SSB_logo.png -->
+                <a href="https://www.ssb.no/en/"><img data-src="assets/SSB_logo.png" style="border:0px; background-color:transparent"></a>
+                <!-- http://www.stat.fi/site/img/tklogo_en.png -->
+                <a href="http://www.stat.fi/index_en.html"><img data-src="assets/tklogo_en.png" style="border:0px; background-color:transparent"></a>
+
+            </section>
+            <section data-background="assets/cbs-brand.svg" data-background-repeat="repeat" data-background-size="20px">
+
+                <pre class="fragment"><code>NLD CBS
+Statistics Netherlands
+
+Standards
+:   `OData`, `REST`, `JSON`
+
+Datasets
+:   Dutch: 3000  
+    English: 700
+
+- [opendata.cbs.nl](http://www.cbs.nl/nl-NL/menu/cijfers/statline/open-data/default.htm)
+- [XML API (ODataFeed)](http://opendata.cbs.nl/ODataFeed/)
+- [StatLine App](http://opendata.cbs.nl/Dataportaal/index.html#_la=en)
+- [About StatLine App](http://www.cbs.nl/nl-NL/menu/cijfers/statline/app/default.htm)
+- [OData Catalog: tables](http://opendata.cbs.nl/ODataCatalog/Tables)
+- [Available tables (PDF)](http://www.cbs.nl/NR/rdonlyres/E50FBCD8-EFFA-4E30-8D9B-DE68FEA89B8C/0/StatlineContentsEnglish.pdf)
+
+#### References
+
+- [General information](http://www.cbs.nl/opendata)
+- [User manual](http://www.cbs.nl/NR/rdonlyres/2561A2B7-CE51-47B9-A838-9968EF67FFB0/0/2014handleidingcbsopendataservices.pdf)
+- [Open data StatLine](http://opendata.cbs.nl/dataportaal/portal.html#_la=en)
+- [Contact](mailto:infoservice@cbs.nl)
+               </code></pre>
+
+            </section>
+            <section data-background-color="#ffffff" data-background="assets/ons-logo.svg" data-background-repeat="repeat" data-background-size="120px">
+
+                <pre class="fragment"><code>UK ONS
+Office for National Statistics
+
+Standards
+:   `REST`, `XML`, `JSON`
+
+- [How-to-guides](https://www.ons.gov.uk/ons/apiservice/how-to-guides)
+- [HTML output for humans](http://data.ons.gov.uk/ons/api/data/.html?context=Census&apikey=xPuqnMzZ01)
+- [Data Explorer (Beta)](http://www.ons.gov.uk/ons/data/web/explorer)
+                </code></pre>
+
+            </section>
+            <section data-background-color="#ffffff" data-background="assets/AmtsLogo.png" data-background-repeat="repeat" data-background-size="70px">
+
+                <pre class="fragment"><code>Germany DESTATIS
+Statistisches Bundesamt
+
+- [GENESIS-Webservice](https://www-genesis.destatis.de/genesis/online;jsessionid=F28B431CACF4A285DD2646A7EF76F446.tomcat_GO_2_1?Menu=Webservice)
+- [User Documentation (in German)](https://www-genesis.destatis.de/genesis/misc/GENESIS-Webservices_Einfuehrung.pdf)
+- [technical interface description (WSDL)](https://www-genesis.destatis.de/genesisWS/web)
+- [ExportService WSDL](https://www-genesis.destatis.de/genesisWS/services/ExportService?wsdl)
+
+#### Table Format (`TabellenExport`)
+
+- registration: standard customer (50 Euros)
+
+#### Quader Format (`DatenExport`)
+
+- [format description](https://www-genesis.destatis.de/genesis/misc/GENESIS-Online-Export.pdf)
+- [format example](https://www-genesis.destatis.de/genesis/misc/Datenexport_de.pdf)
+- registration: premium customer (500 Euros)
+                </code></pre>
+
+            </section>
+            <section data-background="assets/bea-final-logo-blue-backing.png" data-background-repeat="repeat" data-background-size="70px">
+
+                <pre class="fragment"><code>USA BEA
+Bureau of Economic Analysis
+
+Standards
+:   `REST`, `NDJSON`
+
+Datasets
+:   500
+
+- [BEA API](http://www.bea.gov/api/data/?)
+                </code></pre>
+
+            </section>
+            <section data-background="assets/logo_statistik_en.gif" data-background-repeat="repeat" data-background-size="120px">
+
+                <pre class="fragment"><code>AUT STATAT
+Statistics Austria
+
+Standards
+:   `CSV` data, `JSON` meta data
+
+- [Statistics Austria open.data](http://data.statistik.gv.at)
+- [open.data@statistik.gv.at](mailto:open.data@statistik.gv.at)
+- [RSS feed: publications](http://www.statistik.at/web_de/presse/rss_feed/presseinformation.html)
+- [data.gv.at: available datasets](https://www.data.gv.at/katalog/feeds/custom.atom?organization=statistik-austria)
+
+STATcube - Statistical Database
+
+SuperSTAR is the name of a software package comprising a number of applications for the processing of large amounts of data. The application provided by our homepage is specially designed for Internet application and is called SuperWEB.
+
+- [STATcube](http://statcube.com)
+- [STATcube: Load a TXD (list of dataset codes)](http://statcube.com/statistik.at/ext/superweb/selectFromCatalogue.do?type=table)
+- [STATcube: user manual (PDF)](http://www.statistik.at/wcm/idc/idcplg?IdcService=GET_PDF_FILE&dDocName=076148)
+- [datahub.io: at-statistics](http://datahub.io/dataset/at-statistics): `No bulk download. Material available in XLS, PDF or HTML formats`
+                </code></pre>
+
+            </section>
+            <section data-background-color="#ffffff" data-background="assets/sig-blk-en.svg" data-background-repeat="repeat" data-background-size="150px">
+
+                <pre class="fragment"><code>CAN StatCan
+Statistics Canada
+
+Standards
+:   `SOAP`, `XML`
+
+At present, the API is still provisional. It is not possible to return a list of contained tables.
+                </code></pre>
+
+            </section>
+            <section data-background-color="#ffffff" data-background="assets/logo_en.png" data-background-repeat="repeat" data-background-size="60px">
+
+                <pre class="fragment"><code>DNK Statistikbanken
+Statistics Denmark
+
+https://github.com/rOpenGov/dkstat
+
+Standards
+:   `JSON`, `XML`
+
+- [Available tables in JSON](http://api.statbank.dk/v1/tables?lang=en)
+- [Statistikbank API - Beta](http://www.dst.dk/da/Statistik/statistikbanken/api)
+- [Query Builder](http://api.statbank.dk/console#subjects)
+- [Example Query: returns file with subjects in JSON](http://api.statbank.dk/v1/subjects)
+                </code></pre>
+
+            </section>
+            <section data-background="assets/SCB-logo_eng.png" data-background-repeat="repeat" data-background-size="120px">
+
+                <pre class="fragment"><code>SWE SCB
+Statistics Sweden
+
+https://github.com/rOpenGov/pxweb
+
+Standards
+:   `PX-Web`
+
+- [PC-Axis API description (PDF)](http://www.scb.se/Grupp/OmSCB/API/API-description.pdf)
+                </code></pre>
+
+            </section>
+            <section data-background="assets/SSB_logo.png" data-background-repeat="repeat" data-background-size="150px">
+
+                <pre class="fragment"><code>NOR SSB
+Statistics Norway
+
+Standards
+:   `PX-Web`
+
+- [Available Datasets (HTML)](http://data.ssb.no/api/v0/dataset/?lang=en)
+- [Available Datasets (JSON)](http://data.ssb.no/api/v0/dataset/list.json?lang=en)
+- [PX-API: Create your own datasets](http://www.ssb.no/en/omssb/tjenester-og-verktoy/api/px-api)
+- [Preliminary user manual in PDF](http://www.ssb.no/en/omssb/tjenester-og-verktoy/api/px-api/_attachment/248250?_ts=1559219c7b8)
+                </code></pre>
+
+            </section>
+            <section data-background="assets/tklogo_en.png" data-background-repeat="repeat" data-background-size="120px">
+
+                <pre class="fragment"><code>FIN PXNET2
+Statistics Finland
+
+https://github.com/rOpenGov/pxweb
+
+Standards
+:   `JSON`
+
+- [Statistics Finland's PX-Web databases](http://pxnet2.stat.fi/PXWeb/pxweb/en/StatFin/StatFin__kan__vtp/?tablelist=true)
+- [PX-Web API](http://pxnet2.stat.fi/api1.html)
+- [blocks.org: Finnis Labor Market](http://bl.ocks.org/badosa/81ab0e82138199d7e166)
+                </code></pre>
+
+            </section>
+            <!-- https://raw.githubusercontent.com/bowerth/nsoApi/master/assets/nsoApiBrowser.png -->
+            <section data-background="assets/nsoApiBrowser.png">
+                <pre class="fragment"><code>
+Shiny Data Browser:
+
+http://github.com/bowerth/nsoApiBrowser
+
+Available Datasets:
+
+http://www.gitbook.com/read/book/bowerth/opendata-tables
+
+Suggestions:
+
+http://gitter.im/bowerth/nsoApi
+                </code></pre>
+            </section>
+            <!-- https://raw.githubusercontent.com/bowerth/sdmxPlay/master/assets/screenshot-ecb-exr-a-q-m.png -->
+            <section data-background="assets/sdmxPlay.png">
+                <pre class="fragment"><code>SDMX
+Standard for data and metadata exchange developed by International Organizations
+
+Java functions:
+
+https://github.com/amattioc/SDMX
+
+Scala Play browser:
+
+https://boiling-lake-45550.herokuapp.com/
+https://github.com/bowerth/sdmxPlay
+                </code></pre>
+            </section>
+
+
+            </div>
+
+        </div>
+
+        <script src="../lib/js/head.min.js"></script>
+        <script src="../js/reveal.js"></script>
+
+        <script>
+
+         // Full list of configuration options available at:
+         // https://github.com/hakimel/reveal.js#configuration
+         Reveal.initialize({
+             controls: true,
+             progress: true,
+             history: true,
+             center: true,
+
+             transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+             // Optional reveal.js plugins
+             dependencies: [
+                 { src: '../lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                 { src: '../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                 { src: '../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                 { src: '../plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                 { src: '../plugin/zoom-js/zoom.js', async: true },
+                 { src: '../plugin/notes/notes.js', async: true }
+             ]
+         });
+
+        </script>
+
+    </body>
+</html>
