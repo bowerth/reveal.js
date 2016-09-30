@@ -53,17 +53,9 @@
 	          <h2>Trade Module</h2>
           </section>
 
-          <section>
-	            <h2>Flag Assignment</h2>
-          </section>
-
           <section data-markdown data-background-color="#222">
             <script type="text/template">
-              ### Outlier
-
-              - calculate median unit value by reporter, year, flow and hs
-              - label all observations as outlier that are smaller or larger than out_coef times the inter-quartile range
-              - the higher with higher number for out_coef, less fewer observations will be categorized as outlier
+              ### Outlier Detection by UV and IQR
 
               ```
               # Imputation of missings and outliers
@@ -74,19 +66,31 @@
               flagTrade = ~ifelse(no_quant | outlier, 1, 0))
               ```
 
+              - calculate median unit value by reporter, year, flow and hs
+              - label all observations as outlier that are smaller or larger than out_coef times the inter-quartile range
+              - the higher with higher number for out_coef, less fewer observations will be categorized as outlier
+
+              - **flagTrade** is a counter (non-negative integer)
+
+              ```
+              flagTrade = ~ifelse(no_quant | outlier, 1, 0)
+              ```
+
             </script>
           </section>
 
           <section data-markdown data-background-color="#222">
             <script type="text/template">
-              ### Outlier
+              ### Outlier resulting in imputed flag
 
-              - `flagTrade` summarised with `qty` and `value`
+                aggregation over hs, by fcl: **flagTrade** is summing als the "1"s from the outlier detection
 
-              ```
-              summarise_each_(funs(sum = sum(., na.rm = TRUE)), 
-              vars = c("qty", "value","flagTrade"))
-              ```
+                ```
+                summarise_each_(
+                funs(sum(., na.rm = TRUE)),
+                vars = c("qty", "value","flagTrade"))
+                ```
+                if the **flagTrade** is larger than zero, classify as "imputed / estimated"
 
               ```
               mutate_(
@@ -112,23 +116,34 @@
 
           <section data-markdown data-background-color="#222">
             <script type="text/template">
-              #### Mirror Trade
+              #### Mirror Trade Rationale
 
-              - only for countries that show up as partner but not as reporter
-              - i.e. does not apply to countries that exist as reporter countries
+              - in 2011, 150 countries show up as reporter
+              - in 2011, 81 countries show up as partner but not as reporter
               - same country can have different reporter and partner code,
               e.g. USA reporter code is 842 (including Virgin Islands and Puerto Rico),
               as a partner however the M49 code is used (USA 840)
               see [tradeproc](http://rpubs.com/malexan/tradeproc)
-              - main use probably for small islands, e.g. 227 Tuvalu
+              - the documentation mentions a higher risk of data loss due to two-step mapping: "Mapping from Comtrade M49 and Geonomenclature directly to M49" [tradeDocumentation.Rnw](https://github.com/SWS-Methodology/faoswsTrade/blob/master/vignettes/Documentation/tradeDocumentation.Rnw#L363)
+              
+            </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+            <script type="text/template">
+              #### Connection Outlier and Mirror Trade Flag
+
+              - in 2011, 150 countries show up as reporter
 
             </script>
+          </section>
+
           </section>
 
           <section>
 
             <section>
-	              <h2>Loss Module</h2>
+            <h2>Loss Module</h2>
             </section>
 
             <section data-markdown data-background-color="#222">
@@ -136,6 +151,7 @@
                 ### Time Period
 
                 using the SWS table "fbs_production_comm_codes"
+
                 ```
                 years <- getCompleteImputationKey(table = "production")@
                 dimensions[["timePointYears"]]@keys
