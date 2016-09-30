@@ -22,16 +22,16 @@
 
     <!-- Printing and PDF exports -->
     <script>
-      var link = document.createElement( 'link' );
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = window.location.search.match( /print-pdf/gi ) ? '../css/print/pdf.css' : '../css/print/paper.css';
-      document.getElementsByTagName( 'head' )[0].appendChild( link );
+     var link = document.createElement( 'link' );
+     link.rel = 'stylesheet';
+     link.type = 'text/css';
+     link.href = window.location.search.match( /print-pdf/gi ) ? '../css/print/pdf.css' : '../css/print/paper.css';
+     document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
 
     <!--[if lt IE 9]>
 	      <script src="lib/js/html5shiv.js"></script>
-	      <![endif]-->
+	    <![endif]-->
   </head>
 
   <body>
@@ -39,137 +39,254 @@
     <div class="reveal">
 
       <div class="slides">
-	      <section>
-	        <h2>FBS Modules</h2>
-	        <!-- <h3>Theme Site</h3> -->
+
+	        <section>
+	          <h2>FBS Modules</h2>
+	          <!-- <h3>Theme Site</h3> -->
           <p><a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/">http://hqlprsws1.hq.un.fao.org/fbsmodules/</a></p>
-	        <p><small>Bo Werth, ESS</small></p>
-	      </section>
+	          <p><small>Bo Werth, ESS</small></p>
+	        </section>
 
-	      <section>
 	        <section>
-	          <h2>Modules</h2>
-	        </section>
-	        <section>
-	          <h3>High-Levels Flow Diagrams</h3>
-	          <!-- <p> -->
-	          <!--   <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#stock-module">Stock Module</a> -->
-	          <!-- </p> -->
-            <img data-src="assets/fbs-module-flow-stocks.png" alt="fbs flow stocks" style="border:0px; background-color:transparent">
-	        </section>
-	        <section>
-	          <h3>High-Level Flow Diagram</h3>
-            <ul>
-	            <li>show internal logic of module</li>
-	            <li>include data sourcing and treatment</li>
-	            <li>highlight existing methodological issues</li>
-	            <li>identify alternative approaches</li>
-            </ul>
-          </section>
+
           <section>
-	          <h3>Helper Programs</h3>
-	          <!-- <p> -->
-	          <!--   <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#r-scripts-by-module">R Scripts by Module</a> -->
-	          <!-- </p> -->
-            <pre><code>faoswsFeed
-:   animalFunctions.R  
-    ass_energy_factor.r  
-    ass_protein_factor.r  
-    buffalo_energy_factor.r  
-    buffalo_protein_factor.r  
-    calculateAnimalUnits.R  
-    calculateAquaDemand.r  
-    calculateFeedDemand.R</code></pre>
-            <pre><code>faoswsFood
-:   calculateFood.R  
-    commodity2FunctionalForm.R  
-    FoodModule.R  
-    functionalForms.R  
-    getCommodityClassification.R  
-    getFoodData.R</code></pre>
-	        </section>
-	        <section>
-	          <h3>Helper Programs</h3>
-            <ul>
-	            <li>indicate complexity of module</li>
-              <li>draw lower-level internal structure diagram</li>
-	            <li>design routines to identify inconsistencies</li>
-	            <li>e.g. DatasetKey function to read from SWS:</li>
-              <pre><code>DatasetKey(domain = ..., dataset = ...)</code></pre>
-            </ul>
+	          <h2>Trade Module</h2>
           </section>
 
-        </section>
-
-        <section>
-
-	        <section>
-	          <h2>Data</h2>
-	        </section>
           <section>
-	          <!-- <h3>SWS Dataset Configuration</h3> -->
-	          <!-- <p> -->
-	          <!--   <a href="http://hqlqasws1.hq.un.fao.org:8080/dataset_configuration.html">hqlqasws1.hq.un.fao.org:8080/dataset_configuration.html</a> -->
-	          <!-- </p> -->
-	          <h3>"DESCRIPTION" files</h3>
-	          <p>
-	            <a href="https://github.com/SWS-Methodology/faoswsStandardization/blob/master/DESCRIPTION#L30">faoswsStandardization/DESCRIPTION</a>
-	          </p>
-	        </section>
+	            <h2>Flag Assignment</h2>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+            <script type="text/template">
+              ### Outlier
+
+              - calculate median unit value by reporter, year, flow and hs
+              - label all observations as outlier that are smaller or larger than out_coef times the inter-quartile range
+              - the higher with higher number for out_coef, less fewer observations will be categorized as outlier
+
+              ```
+              # Imputation of missings and outliers
+              tradedata <- tradedata %>%
+              mutate_(qty = ~ifelse(no_quant | outlier,
+              value / uv_reporter,
+              qty),
+              flagTrade = ~ifelse(no_quant | outlier, 1, 0))
+              ```
+
+            </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+            <script type="text/template">
+              ### Outlier
+
+              - `flagTrade` summarised with `qty` and `value`
+
+              ```
+              summarise_each_(funs(sum = sum(., na.rm = TRUE)), 
+              vars = c("qty", "value","flagTrade"))
+              ```
+
+              ```
+              mutate_(
+              flagObservationStatus = 
+              ~ifelse((flagTrade > 0) & (fclunit != "$ value only"),"I",""),
+              flagMethod = 
+              ~ifelse((flagTrade > 0) & (fclunit != "$ value only"),"e",""))
+              ```
+
+            </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+            <script type="text/template">
+              ### Outlier Coefficient Sensitivity
+
+              <img data-src="assets/trademodule-outcoef-simulation-2011.svg" alt="trademodule outcoef simulation 2011" style="border:0px; background-color:#FFFFFF">
+
+              see [fbsmodules/modules/#trade-module](http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#trade-module)
+
+            </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+            <script type="text/template">
+              #### Mirror Trade
+
+              - only for countries that show up as partner but not as reporter
+              - i.e. does not apply to countries that exist as reporter countries
+              - same country can have different reporter and partner code,
+              e.g. USA reporter code is 842 (including Virgin Islands and Puerto Rico),
+              as a partner however the M49 code is used (USA 840)
+              see [tradeproc](http://rpubs.com/malexan/tradeproc)
+              - main use probably for small islands, e.g. 227 Tuvalu
+
+            </script>
+          </section>
+
           <section>
-            <h3>"DESCRIPTION" files</h3>
-            <ul>
-	            <li><font color="#42affa">PRO</font> early initiative to track data dependency by variable</li>
-	            <li><font color="#42affa">PRO</font> suitable to obtain a global overview</li>
-	            <li><font color="#fa8d42">CON</font> requires maintenance by developer</li>
-	            <li><font color="#fa8d42">CON</font> information ideally associated with module</li>
-            </ul>
-	        </section>
-          <section>
-	          <h3>"DatasetKey" function</h3>
-	          <p>
-	            <a href="https://github.com/SWS-Methodology/faoswsFeed/blob/master/R/getAnimalStocks.R#L19">faoswsFeed/R/getAnimalStocks.R </a>
-	          </p>
-	        </section>
-	        <section>
-	          <h3>"DatasetKey" Function</h3>
-            <ul>
-              <li>search programs for keywords, e.g. "DatasetKey"</li>
-              <li>parse code block, extract fields "domain" and "dataset"</li>
-              <li>repeat for similar keywords (e.g. "ReadDatatable")</li>
-              <pre><code>faoswsFeed
-:   c("agriculture:aproduction", "trade:total_trade_CPC")  
-    c("agriculture:aproduction:==", "trade:total_trade_CPC:==")  
-    agriculture:aproduction
 
-faoswsFood
-:   c("faostat_one:FS1_SUA_UPD", "agriculture:aproduction")
+            <section>
+	              <h2>Loss Module</h2>
+            </section>
 
-faoswsIndustrial
-: </code></pre>
-            </ul>
-	        </section>
+            <section data-markdown data-background-color="#222">
+              <script type="text/template">
+                ### Time Period
 
-        </section>
+                using the SWS table "fbs_production_comm_codes"
+                ```
+                years <- getCompleteImputationKey(table = "production")@
+                dimensions[["timePointYears"]]@keys
+                cat(head(years, 3), "...", tail(years, 3))
+                > 1990 1991 1992 ... 2014 2015 2016
+                ```
 
-        <section>
-	        
-	        <section>
-	          <h2>Validation</h2>
-            <p>
-              <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/validation/">fbsmodules/validation</a>
-            </p>
-	        </section>
-	        <section>
-            <h3>Dietary Energy Supply</h3>
-            <h4>calories per day per person</h4>
-            <img data-src="assets/sua-fbs-iraq-des-comparison-2013.png" alt="sua fbs iraq des comparison 2013" style="border:0px; background-color:transparent">
-	        </section>
-	        <section>
-            <h3>DES-DEC Comparison</h3>
-            <h4>Dietary Energy Supply and Consumption</h4>
-            <img data-src="assets/fbs-des-dec-comparison.png" alt="fbs des dec comparison" style="border:0px; background-color:transparent">
-	        </section>
+              </script>
+            </section>
+
+            <section data-markdown data-background-color="#222">
+              <script type="text/template">
+                ### Commodity Codes
+
+                CPC codes missing after data copy 
+                ```
+                setdiff(
+                getCompleteImputationKey(table = "production")@
+                dimensions[["measuredItemCPC"]]@keys,
+                faosws::GetCodeList(domain = "agriculture",
+                dataset = "aproduction",
+                dimension = "measuredItemCPC")[["code"]]
+                )
+                [1] "01241.02" "01929.91"
+                ```
+                see message 4 August 2016
+              </script>
+            </section>
+
+          </section>
+
+<!--           <section> -->
+<!-- 	            <h3>High-Levels Flow Diagrams</h3> -->
+<!-- 	            <\!-- <p> -\-> -->
+<!-- 	            <\!--   <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#stock-module">Stock Module</a> -\-> -->
+<!-- 	            <\!-- </p> -\-> -->
+<!--             <img data-src="assets/fbs-module-flow-stocks.png" alt="fbs flow stocks" style="border:0px; background-color:transparent"> -->
+<!-- 	          </section> -->
+<!-- 	          <section> -->
+<!-- 	            <h3>High-Level Flow Diagram</h3> -->
+<!--             <ul> -->
+<!-- 	              <li>show internal logic of module</li> -->
+<!-- 	              <li>include data sourcing and treatment</li> -->
+<!-- 	              <li>highlight existing methodological issues</li> -->
+<!-- 	              <li>identify alternative approaches</li> -->
+<!--             </ul> -->
+<!--           </section> -->
+<!--           <section> -->
+<!-- 	            <h3>Helper Programs</h3> -->
+<!-- 	            <\!-- <p> -\-> -->
+<!-- 	            <\!--   <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#r-scripts-by-module">R Scripts by Module</a> -\-> -->
+<!-- 	            <\!-- </p> -\-> -->
+<!--             <pre><code>faoswsFeed -->
+<!-- :   animalFunctions.R   -->
+<!--   ass_energy_factor.r   -->
+<!--   ass_protein_factor.r   -->
+<!--   buffalo_energy_factor.r   -->
+<!--   buffalo_protein_factor.r   -->
+<!--   calculateAnimalUnits.R   -->
+<!--   calculateAquaDemand.r   -->
+<!--   calculateFeedDemand.R</code></pre> -->
+<!--             <pre><code>faoswsFood -->
+<!-- :   calculateFood.R   -->
+<!--   commodity2FunctionalForm.R   -->
+<!--   FoodModule.R   -->
+<!--   functionalForms.R   -->
+<!--   getCommodityClassification.R   -->
+<!--   getFoodData.R</code></pre> -->
+<!-- 	          </section> -->
+<!-- 	          <section> -->
+<!-- 	            <h3>Helper Programs</h3> -->
+<!--             <ul> -->
+<!-- 	              <li>indicate complexity of module</li> -->
+<!--               <li>draw lower-level internal structure diagram</li> -->
+<!-- 	              <li>design routines to identify inconsistencies</li> -->
+<!-- 	              <li>e.g. DatasetKey function to read from SWS:</li> -->
+<!--               <pre><code>DatasetKey(domain = ..., dataset = ...)</code></pre> -->
+<!--             </ul> -->
+<!--           </section> -->
+
+<!--         </section> -->
+
+<!--         <section> -->
+
+<!-- 	          <section> -->
+<!-- 	            <h2>Data</h2> -->
+<!-- 	          </section> -->
+<!--           <section> -->
+<!-- 	            <\!-- <h3>SWS Dataset Configuration</h3> -\-> -->
+<!-- 	            <\!-- <p> -\-> -->
+<!-- 	            <\!--   <a href="http://hqlqasws1.hq.un.fao.org:8080/dataset_configuration.html">hqlqasws1.hq.un.fao.org:8080/dataset_configuration.html</a> -\-> -->
+<!-- 	            <\!-- </p> -\-> -->
+<!-- 	            <h3>"DESCRIPTION" files</h3> -->
+<!-- 	            <p> -->
+<!-- 	              <a href="https://github.com/SWS-Methodology/faoswsStandardization/blob/master/DESCRIPTION#L30">faoswsStandardization/DESCRIPTION</a> -->
+<!-- 	            </p> -->
+<!-- 	          </section> -->
+<!--           <section> -->
+<!--             <h3>"DESCRIPTION" files</h3> -->
+<!--             <ul> -->
+<!-- 	              <li><font color="#42affa">PRO</font> early initiative to track data dependency by variable</li> -->
+<!-- 	              <li><font color="#42affa">PRO</font> suitable to obtain a global overview</li> -->
+<!-- 	              <li><font color="#fa8d42">CON</font> requires maintenance by developer</li> -->
+<!-- 	              <li><font color="#fa8d42">CON</font> information ideally associated with module</li> -->
+<!--             </ul> -->
+<!-- 	          </section> -->
+<!--           <section> -->
+<!-- 	            <h3>"DatasetKey" function</h3> -->
+<!-- 	            <p> -->
+<!-- 	              <a href="https://github.com/SWS-Methodology/faoswsFeed/blob/master/R/getAnimalStocks.R#L19">faoswsFeed/R/getAnimalStocks.R </a> -->
+<!-- 	            </p> -->
+<!-- 	          </section> -->
+<!-- 	          <section> -->
+<!-- 	            <h3>"DatasetKey" Function</h3> -->
+<!--             <ul> -->
+<!--               <li>search programs for keywords, e.g. "DatasetKey"</li> -->
+<!--               <li>parse code block, extract fields "domain" and "dataset"</li> -->
+<!--               <li>repeat for similar keywords (e.g. "ReadDatatable")</li> -->
+<!--               <pre><code>faoswsFeed -->
+<!-- :   c("agriculture:aproduction", "trade:total_trade_CPC") -->
+<!--   c("agriculture:aproduction:==", "trade:total_trade_CPC:==") -->
+<!--   agriculture:aproduction -->
+
+<!-- faoswsFood -->
+<!-- :   c("faostat_one:FS1_SUA_UPD", "agriculture:aproduction") -->
+
+<!-- faoswsIndustrial -->
+<!-- : </code></pre> -->
+<!--             </ul> -->
+<!-- 	          </section> -->
+
+<!--         </section> -->
+
+<!--         <section> -->
+
+<!-- 	          <section> -->
+<!-- 	            <h2>Validation</h2> -->
+<!--             <p> -->
+<!--               <a href="http://hqlprsws1.hq.un.fao.org/fbsmodules/validation/">fbsmodules/validation</a> -->
+<!--             </p> -->
+<!-- 	          </section> -->
+<!-- 	          <section> -->
+<!--             <h3>Dietary Energy Supply</h3> -->
+<!--             <h4>calories per day per person</h4> -->
+<!--             <img data-src="assets/sua-fbs-iraq-des-comparison-2013.png" alt="sua fbs iraq des comparison 2013" style="border:0px; background-color:transparent"> -->
+<!-- 	          </section> -->
+<!-- 	          <section> -->
+<!--             <h3>DES-DEC Comparison</h3> -->
+<!--             <h4>Dietary Energy Supply and Consumption</h4> -->
+<!--             <img data-src="assets/fbs-des-dec-comparison.png" alt="fbs des dec comparison" style="border:0px; background-color:transparent"> -->
+<!-- 	          </section> -->
 
         </section>
 
@@ -183,26 +300,26 @@ faoswsIndustrial
 
     <script>
 
-      // Full list of configuration options available at:
-      // https://github.com/hakimel/reveal.js#configuration
-      Reveal.initialize({
-      controls: true,
-      progress: true,
-      history: true,
-      center: true,
+     // Full list of configuration options available at:
+     // https://github.com/hakimel/reveal.js#configuration
+     Reveal.initialize({
+       controls: true,
+       progress: true,
+       history: true,
+       center: true,
 
-      transition: 'slide', // none/fade/slide/convex/concave/zoom
+       transition: 'slide', // none/fade/slide/convex/concave/zoom
 
-      // Optional reveal.js plugins
-      dependencies: [
-      { src: '../lib/js/classList.js', condition: function() { return !document.body.classList; } },
-      { src: '../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: '../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: '../plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-      { src: '../plugin/zoom-js/zoom.js', async: true },
-      { src: '../plugin/notes/notes.js', async: true }
-      ]
-      });
+       // Optional reveal.js plugins
+       dependencies: [
+         { src: '../lib/js/classList.js', condition: function() { return !document.body.classList; } },
+         { src: '../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+         { src: '../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+         { src: '../plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+         { src: '../plugin/zoom-js/zoom.js', async: true },
+         { src: '../plugin/notes/notes.js', async: true }
+       ]
+     });
 
     </script>
 
