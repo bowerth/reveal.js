@@ -53,30 +53,47 @@
 	          <h2>Trade Module</h2>
           </section>
 
+
           <section data-markdown data-background-color="#222">
-            <script type="text/template">
-              ### Outlier Detection by UV and IQR
+              <script type="text/template">
+                  ### Outlier Detection by UV and IQR
 
-              ```
-              # Imputation of missings and outliers
-              tradedata <- tradedata %>%
-              mutate_(qty = ~ifelse(no_quant | outlier,
-              value / uv_reporter,
-              qty),
-              flagTrade = ~ifelse(no_quant | outlier, 1, 0))
-              ```
+                  ```
+                  tradedata <- tradedata %>%
+                  group_by_(~year, ~reporter, ~flow, ~hs) %>%
+                  mutate_(
+                  uv_reporter = ~median(uv, na.rm = T),
+                  outlier = ~uv %in% boxplot.stats(uv, coef = out_coef, do.conf = F)$out) %>%
+                  ungroup()
+                  ```
 
-              - calculate median unit value by reporter, year, flow and hs
-              - label all observations as outlier that are smaller or larger than out_coef times the inter-quartile range
-              - with higher number for out_coef, fewer observations will be categorized as outlier
+                  `boxplot.stats(uv, coef=out_coef, do.conf=F)`
 
-              - **flagTrade** is a counter (non-negative integer)
+              </script>
+          </section>
 
-              ```
-              flagTrade = ~ifelse(no_quant | outlier, 1, 0)
-              ```
+          <section data-markdown data-background-color="#222">
+              <script type="text/template">
+                  ### Assign tradeFlag
 
-            </script>
+                  ```
+                  # Imputation of missings and outliers
+                  tradedata <- tradedata %>%
+                  mutate_(qty = ~ifelse(no_quant | outlier,
+                  value / uv_reporter,
+                  qty),
+                  flagTrade = ~ifelse(no_quant | outlier, 1, 0))
+                  ```
+
+                  - calculate median unit value by reporter, year, flow and hs
+                  - label all observations as outlier that are smaller or larger than out_coef times the inter-quartile range
+                  - with higher number for out_coef, fewer observations will be categorized as outlier
+
+                  - **flagTrade** is a counter (non-negative integer)
+
+                  `flagTrade = ~ifelse(no_quant | outlier, 1, 0)`
+
+              </script>
           </section>
 
           <section data-markdown data-background-color="#222">
@@ -127,7 +144,7 @@
 
           <section data-markdown data-background-color="#222">
             <script type="text/template">
-              #### Mirror Trade Rationale
+              #### Mirror Trade
 
               - in 2011, 150 countries show up as reporter
               - in 2011, 81 countries show up as partner but not as reporter
@@ -135,8 +152,77 @@
               e.g. USA reporter code is 842 (including Virgin Islands and Puerto Rico),
               as a partner however the M49 code is used (USA 840)
               see [tradeproc](http://rpubs.com/malexan/tradeproc)
-              - the documentation mentions a higher risk of data loss due to two-step mapping: "Mapping from Comtrade M49 and Geonomenclature directly to M49" [tradeDocumentation.Rnw](https://github.com/SWS-Methodology/faoswsTrade/blob/master/vignettes/Documentation/tradeDocumentation.Rnw#L363)
-              
+              - the documentation mentions a higher risk of data loss due to two-step mapping: "Mapping from Comtrade M49 and Geonomenclature directly to M49" [tradeDocumentation.Rnw](http://github.com/SWS-Methodology/faoswsTrade/blob/master/vignettes/Documentation/tradeDocumentation.Rnw#L363)
+
+            </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+              <script type="text/template">
+                  ### Total Trade
+
+                  Aggregate over reporter
+
+                  ```
+                  total_trade_cpc <- completetrade %>%
+                    select_(~geographicAreaM49, ~geographicAreaM49Partner, ~timePointYears,
+                  ~measuredItemCPC, ~measuredElementTrade, ~Value,
+                  ~flagObservationStatus) %>%
+                  group_by_(~geographicAreaM49, ~timePointYears,
+                  ~measuredItemCPC, ~measuredElementTrade) %>%
+                    summarise_(Value = ~sum(Value, na.rm = TRUE),
+                  flagObservationStatus =
+                  ~aggregateObservationFlag(flagObservationStatus)) %>%
+                    ungroup()
+                  ```
+
+                  [total_trade_CPC/main.R#L65](http://github.com/SWS-Methodology/faoswsTrade/blob/master/modules/total_trade_CPC/main.R#L65)
+
+                  `aggregateObservationFlag(flagObservationStatus)`
+
+                  [aggregateObservationFlag.R](http://github.com/SWS-Methodology/faoswsFlag/blob/master/R/aggregateObservationFlag.R)
+
+            </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+              <script type="text/template">
+                  #### faoswsFlag: Flag Weight Table
+
+                  | flagObservationStatus | flagObservationWeight | description |
+                  | --------------------- | --------------------- | ----------- |
+                  |   | 1.00 | Official figure | 
+                  | T | 0.80 | Unofficial figure |
+                  | E | 0.75 | Estimate |
+                  | I | 0.50 | Imputed |
+                  | M | 0.00 | Missing |
+
+                  [http://github.com/SWS-Methodology/faoswsFlag](http://github.com/SWS-Methodology/faoswsFlag#aggregation)
+
+              </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+              <script type="text/template">
+                  ### Summary
+
+                  - outlier at HS level: 4-6% flagTrade assigned
+                  - aggregate to FCL: multiply share of ObservationStatus "I"
+                  - mirror trade and aggregate across partner
+                  - principle of lowest quality: single "I" in partner flow will result in "I" for reporter flow
+
+              </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+              <script type="text/template">
+                  ### Conclusion
+
+                  - identify unit value pattern by commodity (rather than by reporter)
+                  - consider more than one year to obtain stable unit values
+                  - perform unit-value check already in database
+                  - combine unit-value imputation with revised adjustment notes
+
             </script>
           </section>
 
