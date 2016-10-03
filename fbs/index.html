@@ -68,7 +68,7 @@
 
               - calculate median unit value by reporter, year, flow and hs
               - label all observations as outlier that are smaller or larger than out_coef times the inter-quartile range
-              - the higher with higher number for out_coef, less fewer observations will be categorized as outlier
+              - with higher number for out_coef, fewer observations will be categorized as outlier
 
               - **flagTrade** is a counter (non-negative integer)
 
@@ -104,14 +104,25 @@
           </section>
 
           <section data-markdown data-background-color="#222">
-            <script type="text/template">
-              ### Outlier Coefficient Sensitivity
+              <script type="text/template">
+                  ### Outlier Coefficient Sensitivity
 
-              <img data-src="assets/trademodule-outcoef-simulation-2011.svg" alt="trademodule outcoef simulation 2011" style="border:0px; background-color:#FFFFFF">
+                  HS Level
 
-              see [fbsmodules/modules/#trade-module](http://hqlprsws1.hq.un.fao.org/fbsmodules/modules/#trade-module)
+                  <img data-src="assets/trademodule-outcoef-simulation-2011.svg" alt="trademodule outcoef simulation 2011" style="border:0px; background-color:#FFFFFF">
 
-            </script>
+              </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+              <script type="text/template">
+                  ### Outlier Coefficient Sensitivity
+
+                  HS and FCL Level
+
+                  <img data-src="assets/trademodule-outcoef-simulation-aggregate-2011.svg" alt="trademodule outcoef simulation 2011" style="border:0px; background-color:#FFFFFF">
+
+              </script>
           </section>
 
           <section data-markdown data-background-color="#222">
