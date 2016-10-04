@@ -74,6 +74,13 @@
 
           <section data-markdown data-background-color="#222">
               <script type="text/template">
+                  <img data-src="assets/Boxplot_vs_PDF.svg" alt="wikipedia boxplot vs pdf" style="border:0px; background-color:#FFFFFF">
+
+              </script>
+          </section>
+
+          <section data-markdown data-background-color="#222">
+              <script type="text/template">
                   ### Assign tradeFlag
 
                   ```
@@ -124,7 +131,7 @@
               <script type="text/template">
                   ### Outlier Coefficient Sensitivity
 
-                  HS Level
+                  HS Level: out_coef 1.5 -> 6.4% 
 
                   <img data-src="assets/trademodule-outcoef-simulation-2011.svg" alt="trademodule outcoef simulation 2011" style="border:0px; background-color:#FFFFFF">
 
@@ -135,7 +142,7 @@
               <script type="text/template">
                   ### Outlier Coefficient Sensitivity
 
-                  HS and FCL Level
+                  FCL Level: out_coef 1.5 -> 31%
 
                   <img data-src="assets/trademodule-outcoef-simulation-aggregate-2011.svg" alt="trademodule outcoef simulation 2011" style="border:0px; background-color:#FFFFFF">
 
@@ -218,13 +225,25 @@
               <script type="text/template">
                   ### Conclusion
 
+                  - distinguish `flagTrade` for `outlier` and `no_quant`
                   - identify unit value pattern by commodity (rather than by reporter)
                   - consider more than one year to obtain stable unit values
-                  - perform unit-value check already in database
-                  - combine unit-value imputation with revised adjustment notes
+                  - perform outlier check on raw data in database, both on unit values and on monetary values
 
-            </script>
+              </script>
           </section>
+
+          <!-- <section data-markdown data-background-color="#222"> -->
+          <!--     <script type="text/template"> -->
+          <!--         - two groups involved with data quality measurement: IT and businesspeople -->
+          <!--         - IT thinking it is powerless over data content and can only cleanse data -->
+          <!--           - process depends on the business supplying exact rules -->
+          <!--         - think that if someone starts measuring data quality and finds out how poor it is, then their systems will get blamed (Olson, 2003, pp. 9–10) -->
+          <!--         - analysts are believing data can and should be perfect and therefore not quite comprehending the need for measurement at all -->
+
+          <!--         > Sebastian-Coleman, Laura: Measuring Data Quality for Ongoing Improvement -->
+          <!--   </script> -->
+          <!-- </section> -->
 
           <!-- <section data-markdown data-background-color="#222"> -->
           <!--   <script type="text/template"> -->
