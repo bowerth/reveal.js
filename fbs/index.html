@@ -53,10 +53,23 @@
 	          <h2>Trade Module</h2>
           </section>
 
+          <section data-markdown data-background-color="#222">
+            <script type="text/template">
+              | reporter| partner| flow|  fcl|hs       |   qty|  value|     uv|
+              |--------:|-------:|----:|----:|:--------|-----:|------:|------:|
+              |        1|      11|    1| 1232|21069020 | 0.036|  5.560| 152.32|
+              |        1|      79|    1| 1232|21069020 | 0.021| 21.409| 999.50|
+              |        1|     167|    1| 1232|21069055 | 0.054|  1.076|  20.09|
+              |        1|      68|    1| 1232|21069055 | 0.007|  0.052|   7.50|
+              |        1|      11|    1| 1232|21069059 | 0.009|  0.187|  20.82|
+              |        1|      57|    1| 1232|21069059 | 0.117|  0.257|   2.20|
+
+            </script>
+          </section>
 
           <section data-markdown data-background-color="#222">
-              <script type="text/template">
-                  ### Outlier Detection by UV and IQR
+            <script type="text/template">
+              ### Outlier Detection by UV and IQR
 
                   ```
                   tradedata <- tradedata %>%
